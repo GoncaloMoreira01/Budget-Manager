@@ -1,0 +1,79 @@
+<app-navbar></app-navbar>
+<main class="page-shell">
+  <section class="content">
+    <div class="intro">
+      <span class="eyebrow">ORÇAMENTO RÁPIDO</span>
+      <h1>Vamos calcular<br /><span>o seu serviço.</span></h1>
+      <p>Preencha os detalhes abaixo para preparar o seu orçamento.</p>
+    </div>
+
+    <form class="form-card" (ngSubmit)="calculate()" #serviceForm="ngForm">
+      <div class="card-heading">
+        <div>
+          <span class="step-label">01 <span>/ DETALHES</span></span>
+          <h2>Dados do serviço</h2>
+        </div>
+        <span class="required-note"><span>*</span> Campos obrigatórios</span>
+      </div>
+
+      <div class="fields-grid">
+        <label class="field" for="service-type">
+          <span>Tipo de serviço <b>*</b></span>
+          <div class="input-wrap">
+            <span class="field-icon">◇</span>
+            <input id="service-type" name="serviceType" type="text"
+              placeholder="Ex.: Limpeza, arrumos..."
+              [(ngModel)]="serviceType" required />
+          </div>
+        </label>
+
+        <label class="field" for="amount">
+          <span>Valor <b>*</b></span>
+          <div class="input-wrap">
+            <span class="field-icon">€</span>
+            <input id="amount" name="amount" type="text" inputmode="decimal"
+              placeholder="0,00"
+              [(ngModel)]="amount" required />
+          </div>
+        </label>
+
+        <div class="field-spacer" aria-hidden="true"></div>
+
+        <label class="field full-width" for="origin">
+          <span>Destino inicial <b>*</b></span>
+          <div class="input-wrap">
+            <span class="field-icon pin">●</span>
+            <input id="origin" name="origin" type="text" placeholder="De onde parte o serviço?" [(ngModel)]="origin" required />
+          </div>
+        </label>
+
+        <label class="field full-width" for="destination">
+          <span>Destino final <b>*</b></span>
+          <div class="input-wrap">
+            <span class="field-icon pin end">●</span>
+            <input id="destination" name="destination" type="text"
+              placeholder="Qual é o destino?"
+              [(ngModel)]="destination" required />
+          </div>
+        </label>
+      </div>
+
+      <div class="card-footer">
+        <span class="secure-note"><span class="lock">▣</span> Os seus dados ficam seguros</span>
+        <button type="submit" [disabled]="serviceForm.invalid">
+          <span>Calcular</span><span class="arrow">→</span>
+        </button>
+      </div>
+
+      @if (calculated && serviceForm.valid) {
+        <div class="result" role="status">
+          <div><span class="result-label">SERVIÇO</span><strong>{{ serviceType }}</strong></div>
+          <div><span class="result-label">PERCURSO</span><strong>{{ origin }} <span class="route-arrow">→</span> {{ destination }}</strong></div>
+          <div class="result-amount"><span class="result-label">VALOR INDICADO</span><strong>{{ calculatedAmountDisplay }}</strong></div>
+        </div>
+      }
+    </form>
+
+    <footer class="page-footer"><span>Simples, rápido e transparente.</span><span>© 2026 Budget Manager</span></footer>
+  </section>
+</main>
