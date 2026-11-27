@@ -6,7 +6,7 @@
       <h1>Vamos calcular<br /><span>o seu serviço.</span></h1>
       <p>Preencha os detalhes abaixo para preparar o seu orçamento.</p>
     </div>
-
+    
     <form class="form-card" (ngSubmit)="calculate()" #serviceForm="ngForm">
       <div class="card-heading">
         <div>
@@ -37,8 +37,6 @@
           </div>
         </label>
 
-        <div class="field-spacer" aria-hidden="true"></div>
-
         <label class="field full-width" for="origin">
           <span>Destino inicial <b>*</b></span>
           <div class="input-wrap">
@@ -59,20 +57,28 @@
       </div>
 
       <div class="card-footer">
-        <span class="secure-note"><span class="lock">▣</span> Os seus dados ficam seguros</span>
-        <button type="submit" [disabled]="serviceForm.invalid">
-          <span>Calcular</span><span class="arrow">→</span>
+        <span class="privacy-note"><span aria-hidden="true">⌖</span> Destinos enviados para calcular a rota</span>
+        <button type="submit" [disabled]="serviceForm.invalid || isCalculating">
+          <span>{{ isCalculating ? 'A calcular…' : 'Calcular' }}</span><span class="arrow">{{ isCalculating ? '…' : '→' }}</span>
         </button>
       </div>
+
+      @if (calculationMessage) {
+        <p class="calculation-message" [class.error-message]="!isCalculating && !calculated" role="status">{{ calculationMessage }}</p>
+      }
 
       @if (calculated && serviceForm.valid) {
         <div class="result" role="status">
           <div><span class="result-label">SERVIÇO</span><strong>{{ serviceType }}</strong></div>
-          <div><span class="result-label">PERCURSO</span><strong>{{ origin }} <span class="route-arrow">→</span> {{ destination }}</strong></div>
+          <div><span class="result-label">ORIGEM ENCONTRADA</span><strong>{{ resolvedOrigin }}</strong></div>
+          <div><span class="result-label">DESTINO ENCONTRADO</span><strong>{{ resolvedDestination }}</strong></div>
+          <div class="result-distance"><span class="result-label">DISTÂNCIA DE CARRO</span><strong>{{ distanceDisplay }}</strong></div>
           <div class="result-amount"><span class="result-label">VALOR INDICADO</span><strong>{{ calculatedAmountDisplay }}</strong></div>
         </div>
       }
     </form>
+
+    <p class="map-attribution">Geocodificação: <a href="https://photon.komoot.io/" target="_blank" rel="noopener noreferrer">Photon</a> · Percurso: <a href="https://project-osrm.org/" target="_blank" rel="noopener noreferrer">OSRM</a> · Dados © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a></p>
 
     <footer class="page-footer"><span>Simples, rápido e transparente.</span><span>© 2026 Budget Manager</span></footer>
   </section>
